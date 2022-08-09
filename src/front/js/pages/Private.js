@@ -1,23 +1,20 @@
 import React, { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavPriv } from "../component/NavPriv";
 import { Context } from "../store/appContext";
 
-export const Private = () => {
+export const Private = (props) => {
   const { store, actions } = useContext(Context);
   useEffect(() => {
     actions.private();
   }, [actions.private]);
-  const navigate = useNavigate();
   return (
-    <>
-      {localStorage["jwt-token"] ? (
-        <div>
-          <h2>Super Secreto</h2>
-          <p>{`Usuario: ${store.private && store.private.email}`}</p>
-        </div>
-      ) : (
-        navigate("/login")
-      )}
-    </>
+    <div>
+      <NavPriv />
+      <h1>
+        {`
+        si logras ver esto, es porque tu usuario es -- 
+        ${store.private && store.private.email} --`}
+      </h1>
+    </div>
   );
 };

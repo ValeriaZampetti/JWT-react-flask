@@ -1,3 +1,5 @@
+
+
 [[source]]
 name = "pypi"
 url = "https://pypi.org/simple"
@@ -17,6 +19,7 @@ flask-cors = "*"
 gunicorn = "*"
 cloudinary = "*"
 flask-admin = "*"
+flask-jwt-extended = "*"
 
 [requires]
 python_version = "3.8"

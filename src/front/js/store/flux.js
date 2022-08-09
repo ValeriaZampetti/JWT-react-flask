@@ -1,8 +1,8 @@
 const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
-      private: undefined,
       message: null,
+      private: undefined,
       demo: [
         {
           title: "FIRST",
@@ -21,6 +21,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       exampleFunction: () => {
         getActions().changeColor(0, "green");
       },
+
       signUp: async (requestBody) => {
         const response = await fetch(`${process.env.BACKEND_URL}/api/users`, {
           method: "POST",
@@ -29,51 +30,45 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Content-Type": "application/json",
           },
         });
-        const body = await response.json();
-        if (response.status !== 201) {
-          alert(body);
-          return false;
-        }
-        return true;
+
+        return response.status === 201;
       },
-      login: async (requestBody) => {
+
+      logIn: async (requestBody) => {
         const response = await fetch(`${process.env.BACKEND_URL}/api/token`, {
           method: "POST",
           body: JSON.stringify(requestBody),
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         });
-        if (!response.ok) throw Error("Hubo un problema con el login");
-        if (response.status === 401) {
-          throw "password o usuario incorrecto";
-        } else if (response.status === 400) {
-          throw "revise el payload de su solicitud...";
+
+        if (response.status === 400) {
+          throw "Invalid email or password format";
         }
         const data = await response.json();
         localStorage.setItem("jwt-token", data.token);
-        return true;
+
+        return data;
       },
+
       private: async () => {
         const token = localStorage.getItem("jwt-token");
-
-        const resp = await fetch(`${process.env.BACKEND_URL}/api/protected`, {
+        const response = await fetch(`${process.env.BACKEND_URL}/api/private`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
+            Authorization: `Bearer ${token}`,
           },
         });
-        if (!resp.ok) throw Error("There was a problem in the login request");
-        else if (resp.status === 403) {
-          throw Error("Missing or invalid token");
-        }
-
-        const data = await resp.json();
+        if (!response.ok)
+          throw Error("There was a problem in the login request");
+        var data = await response.json();
         console.log("This is the data you requested", data);
-        setStore({ private: data });
+        setStore({
+          private: data,
+        });
         return data;
       },
+
       getMessage: async () => {
         try {
           // fetching data from the backend

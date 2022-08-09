@@ -1,20 +1,20 @@
 import React, { useState, useContext } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { NavSign } from "../component/NavSign";
+import { NavLog } from "../component/NavLog";
 import { Context } from "../store/appContext";
 
-export const SignUp = (props) => {
+export const LogIn = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
   return (
     <div className="container">
-      <NavSign />
-      <h1 className="m-3"> SignUp</h1>
+      <NavLog />
+      <h1 className="m-3"> Login</h1>
       <div className="row">
         <form>
-          <h4 className="text-secondary">{" Email"}</h4>
+          <h4 className="text-secondary"> {"Email"}</h4>
           <input
             type="text"
             name="email"
@@ -23,7 +23,7 @@ export const SignUp = (props) => {
             placeholder="email"
             onChange={(e) => setEmail(e.target.value)}
           />
-          <h4 className="text-secondary"> {"Password"}</h4>
+          <h4 className="text-secondary">{"Password"}</h4>
           <input
             type="password"
             className="form-control m-1"
@@ -39,19 +39,19 @@ export const SignUp = (props) => {
           type="button"
           className="btn btn-success m-4"
           onClick={async (e) => {
-            const success = await actions.signUp({
+            const success = await actions.logIn({
               email: email,
               password: password,
             });
             if (success) {
-              navigate("/log-in");
+              navigate("/private");
               return;
             }
             alert("something happened while creating the user");
           }}
         >
           {" "}
-          {"sign up..."}{" "}
+          {"Login"}{" "}
         </button>
       </div>
     </div>

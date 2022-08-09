@@ -31,7 +31,6 @@ else:
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MIGRATE = Migrate(app, db, compare_type = True)
 db.init_app(app)
-
 app.config['JWT_API_KEY'] = os.environ.get("FLASK_APP_KEY")
 JWTManager(app)
 # Allow CORS requests to this API
